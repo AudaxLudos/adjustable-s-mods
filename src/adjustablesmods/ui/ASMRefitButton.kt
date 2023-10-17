@@ -74,6 +74,8 @@ class ASMRefitButton : BaseRefitButton() {
 
         val width = getPanelWidth(member, variant)
         val height = getPanelHeight(member, variant)
+
+        // UI colors
         val gray = Misc.getTextColor()
         val darkGray = Misc.getGrayColor()
         val green = Misc.getStoryOptionColor()
@@ -82,7 +84,6 @@ class ASMRefitButton : BaseRefitButton() {
         val darkRed = Misc.setAlpha(Misc.scaleColorOnly(Misc.getNegativeHighlightColor(), 0.4f), 175)
         val yellow = Misc.getHighlightColor()
         val cyan = Misc.getBasePlayerColor()
-
 
         mainPanel = backgroundPanel!!.createCustomPanel(width, height, null)
         backgroundPanel!!.addComponent(mainPanel)
@@ -105,7 +106,9 @@ class ASMRefitButton : BaseRefitButton() {
             Global.getSettings().allHullModSpecs.filter { it.id in variant!!.sMods || it.id in variant.sModdedBuiltIns }
         sMods = sMods.sortedBy { it.displayName }
 
+        // Generate list of s-mods
         for (sMod in sMods) {
+            // Add clickable s-mod button
             sModsElement.addLunaElement(390f, 40f).apply {
                 renderBorder = false
                 renderBackground = true
@@ -157,6 +160,7 @@ class ASMRefitButton : BaseRefitButton() {
                 }
             }
 
+            // Add tooltip to s-mod
             sModsElement!!.addTooltipToPrevious(object : TooltipMakerAPI.TooltipCreator {
                 override fun isTooltipExpandable(tooltipParam: Any?): Boolean {
                     return false
@@ -271,6 +275,20 @@ class ASMRefitButton : BaseRefitButton() {
             }
         }
 
+        footerElement!!.addTooltipToPrevious(object : TooltipMakerAPI.TooltipCreator {
+            override fun isTooltipExpandable(tooltipParam: Any?): Boolean {
+                return false
+            }
+
+            override fun getTooltipWidth(tooltipParam: Any?): Float {
+                return 380f
+            }
+
+            override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
+                tooltip!!.addPara("%s spent on s-mods is not refunded when removed", 0f,gray, green, "Story points")
+            }
+        }, TooltipMakerAPI.TooltipLocation.RIGHT)
+
         val increaseMaxSModButton = footerElement.addLunaElement(195f, 50f).apply {
             renderBorder = false
             renderBackground = true
@@ -306,11 +324,29 @@ class ASMRefitButton : BaseRefitButton() {
                 playSound("ui_char_spent_story_point", 1f, 1f)
                 incrementMaxSModLimit(member)
                 installSModTracker(variant)
+                selectedSMod = null
                 refreshVariant()
                 refreshButtonList()
                 refreshPanel(member, variant)
             }
         }
+
+        footerElement.addTooltipToPrevious(object : TooltipMakerAPI.TooltipCreator {
+            override fun isTooltipExpandable(tooltipParam: Any?): Boolean {
+                return false
+            }
+
+            override fun getTooltipWidth(tooltipParam: Any?): Float {
+                return 380f
+            }
+
+            override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
+                tooltip!!.addPara("No bonus experience is gained when spending %s on this upgrade", 0f,gray, green, "story points")
+                tooltip.addSpacer(10f)
+                tooltip.addPara("Each upgrade doubles the amount of %s required for the next upgrade", 0f, gray, green, "story points")
+            }
+        }, TooltipMakerAPI.TooltipLocation.RIGHT)
+
         increaseMaxSModButton.position.rightOfMid(removeSModButton.elementPanel, 0f)
         footerElement.addSpacer(5f)
         footerPanel.addUIElement(footerElement)

@@ -31,7 +31,12 @@ class ASMFeatureCreep : BaseHullMod() {
         tooltip.setBulletedListMode(" - ")
         tooltip.addPara("Increases the ship's max s-mod limit by %s", oPad, good, "${maxSModModifier.roundToInt()}")
         tooltip.addPara("The default limit and other modifiers is not included", pad)
-        tooltip.addPara("Max number of hull mods that can be s-modded is %s", pad, b, "${Misc.getMaxPermanentMods(ship)}")
+        tooltip.addPara(
+            "Max number of hull mods that can be s-modded is %s",
+            pad,
+            b,
+            "${Misc.getMaxPermanentMods(ship)}"
+        )
         tooltip.setBulletedListMode(null)
     }
 }
