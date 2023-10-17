@@ -4,15 +4,21 @@ import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.combat.ShipVariantAPI
 import com.fs.starfarer.api.fleet.FleetMemberAPI
+import com.fs.starfarer.api.loading.HullModSpecAPI
 import com.fs.starfarer.api.ui.Alignment
 import com.fs.starfarer.api.ui.CustomPanelAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
+import com.fs.starfarer.api.util.Misc
 import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaExtensions.addLunaSpriteElement
 import lunalib.lunaRefit.BaseRefitButton
 import lunalib.lunaUI.elements.LunaSpriteElement
 
 class ASMRefitButton : BaseRefitButton() {
+    private var backgroundPanel: CustomPanelAPI? = null
+    private var mainPanel: CustomPanelAPI? = null
+    private var selectedSMod: HullModSpecAPI? = null
+
     override fun getButtonName(member: FleetMemberAPI?, variant: ShipVariantAPI?): String {
         return "Adjust S-Mods"
     }
@@ -56,21 +62,29 @@ class ASMRefitButton : BaseRefitButton() {
         variant: ShipVariantAPI?,
         market: MarketAPI?
     ) {
+        this.backgroundPanel = backgroundPanel
+        refreshPanel(member, variant)
+    }
+
+    private fun refreshPanel(member: FleetMemberAPI?, variant: ShipVariantAPI?,) {
+        if (backgroundPanel == null) return
+        if (mainPanel != null) backgroundPanel!!.removeComponent(mainPanel)
+
         val width = getPanelWidth(member, variant)
         val height = getPanelHeight(member, variant)
 
-        val mainPanel = backgroundPanel!!.createCustomPanel(width, height, null)
-        backgroundPanel.addComponent(mainPanel)
+        mainPanel = backgroundPanel!!.createCustomPanel(width, height, null)
+        backgroundPanel!!.addComponent(mainPanel)
         mainPanel!!.position.inTL(0f, 0f)
 
-        val headerElement = mainPanel.createUIElement(width, 10f, false)
-        mainPanel.addUIElement(headerElement)
+        val headerElement = mainPanel!!.createUIElement(width, 10f, false)
+        mainPanel!!.addUIElement(headerElement)
         headerElement!!.position.inTL(0f, 0f)
         headerElement.addSectionHeading("Installed S-Mods", Alignment.MID, 0f)
         headerElement.position.inTL(0f, 0f)
 
-        val sModsPanel = mainPanel.createCustomPanel(width, 305f, null)
-        mainPanel.addComponent(sModsPanel)
+        val sModsPanel = mainPanel!!.createCustomPanel(width, 305f, null)
+        mainPanel!!.addComponent(sModsPanel)
         sModsPanel.position.inTL(0f, 18f)
 
         val sModsElement = sModsPanel.createUIElement(width, 305f, true)
@@ -102,10 +116,15 @@ class ASMRefitButton : BaseRefitButton() {
 
                     onClick {
                         playClickSound()
+
+                        selectedSMod = if (selectedSMod == sMod) null else sMod
+                        refreshPanel(member, variant)
                     }
                 }
 
-                innerElement.addPara(sMod.displayName, 0f).apply {
+                var textColor = Misc.getTextColor()
+                if (selectedSMod != null && selectedSMod == sMod) textColor = Misc.getNegativeHighlightColor()
+                innerElement.addPara(sMod.displayName, 0f, textColor, textColor).apply {
                     position.rightOfMid(sprite.elementPanel, 10f)
                 }
 
@@ -122,6 +141,9 @@ class ASMRefitButton : BaseRefitButton() {
 
                 onClick {
                     playClickSound()
+
+                    selectedSMod = if (selectedSMod == sMod) null else sMod
+                    refreshPanel(member, variant)
                 }
             }
         }
