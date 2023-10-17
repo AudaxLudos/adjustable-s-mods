@@ -1,5 +1,6 @@
 package adjustablesmods.ui
 
+import adjustablesmods.*
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.combat.ShipVariantAPI
@@ -13,6 +14,7 @@ import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaExtensions.addLunaSpriteElement
 import lunalib.lunaRefit.BaseRefitButton
 import lunalib.lunaUI.elements.LunaSpriteElement
+import kotlin.math.roundToInt
 
 class ASMRefitButton : BaseRefitButton() {
     private var backgroundPanel: CustomPanelAPI? = null
@@ -66,7 +68,7 @@ class ASMRefitButton : BaseRefitButton() {
         refreshPanel(member, variant)
     }
 
-    private fun refreshPanel(member: FleetMemberAPI?, variant: ShipVariantAPI?,) {
+    private fun refreshPanel(member: FleetMemberAPI?, variant: ShipVariantAPI?) {
         if (backgroundPanel == null) return
         if (mainPanel != null) backgroundPanel!!.removeComponent(mainPanel)
 
@@ -187,6 +189,7 @@ class ASMRefitButton : BaseRefitButton() {
                 }
 
                 playSound("ui_char_decrease_skill", 1f, 1f)
+                removeInstalledSMod(variant, selectedSMod!!.id)
                 selectedSMod = null
                 refreshVariant()
                 refreshButtonList()
@@ -198,27 +201,36 @@ class ASMRefitButton : BaseRefitButton() {
             renderBorder = false
             renderBackground = true
             enableTransparency = true
-            backgroundAlpha = 0.3f
+            backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
             backgroundColor = Misc.getStoryOptionColor()
-            addText(
-                "Increase Max S-Mod Limit",
+            addText("Increase Max S-Mod Limit (%s)",
                 Misc.getStoryOptionColor(),
-            )
-            centerText()
+                Misc.getStoryOptionColor(),
+                listOf("${getStoryPointCost(member).roundToInt()}")
+            ).apply {
+                centerText()
+            }
 
             onHoverEnter {
                 playSound("ui_button_mouseover", 1f, 1f)
+                if (canIncreaseMaxSModLimit(member))
                     backgroundAlpha = 0.5f
             }
 
             onHoverExit {
-                backgroundAlpha = 0.3f
+                backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
             }
 
             onClick {
                 if (!it.isLMBEvent) return@onClick
+                if (!canIncreaseMaxSModLimit(member)) {
+                    playSound("ui_button_disabled_pressed", 1f, 1f)
+                    return@onClick
+                }
 
                 playSound("ui_char_spent_story_point", 1f, 1f)
+                incrementMaxSModLimit(member)
+                installSModTracker(variant)
                 refreshVariant()
                 refreshButtonList()
                 refreshPanel(member, variant)

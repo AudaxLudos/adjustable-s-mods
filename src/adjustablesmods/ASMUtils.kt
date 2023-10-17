@@ -49,7 +49,7 @@ fun incrementMaxSModLimit(fleetMember: FleetMemberAPI?) {
 }
 
 fun canIncreaseMaxSModLimit(fleetMember: FleetMemberAPI?): Boolean {
-    return Global.getSector().playerStats.storyPoints > getStoryPointCost(fleetMember!!)
+    return Global.getSector().playerStats.storyPoints >= getStoryPointCost(fleetMember!!)
 }
 
 fun installSModTracker(variant: ShipVariantAPI?) {
