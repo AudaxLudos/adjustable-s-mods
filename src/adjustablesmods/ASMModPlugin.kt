@@ -1,12 +1,13 @@
 package adjustablesmods
 
+import adjustablesmods.ui.ASMRefitButton
 import com.fs.starfarer.api.BaseModPlugin
-import java.lang.RuntimeException
+import lunalib.lunaRefit.LunaRefitManager
 
 class ASMModPlugin : BaseModPlugin() {
     override fun onApplicationLoad() {
         super.onApplicationLoad()
 
-        throw RuntimeException("Adjustable S-Mods Mod Loaded")
+        LunaRefitManager.addRefitButton(ASMRefitButton())
     }
 }
