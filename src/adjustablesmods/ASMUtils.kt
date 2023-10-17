@@ -44,7 +44,8 @@ fun incrementMaxSModLimit(fleetMember: FleetMemberAPI?) {
         null,
         true,
         0f,
-        null)
+        null
+    )
     data!!.maxSModModifier++
 }
 

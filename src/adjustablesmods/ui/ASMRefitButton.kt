@@ -74,6 +74,15 @@ class ASMRefitButton : BaseRefitButton() {
 
         val width = getPanelWidth(member, variant)
         val height = getPanelHeight(member, variant)
+        val gray = Misc.getTextColor()
+        val darkGray = Misc.getGrayColor()
+        val green = Misc.getStoryOptionColor()
+        val darkGreen = Misc.getStoryDarkColor()
+        val red = Misc.getNegativeHighlightColor()
+        val darkRed = Misc.setAlpha(Misc.scaleColorOnly(Misc.getNegativeHighlightColor(), 0.4f), 175)
+        val yellow = Misc.getHighlightColor()
+        val cyan = Misc.getBasePlayerColor()
+
 
         mainPanel = backgroundPanel!!.createCustomPanel(width, height, null)
         backgroundPanel!!.addComponent(mainPanel)
@@ -124,8 +133,7 @@ class ASMRefitButton : BaseRefitButton() {
                     }
                 }
 
-                var textColor = Misc.getTextColor()
-                if (selectedSMod != null && selectedSMod == sMod) textColor = Misc.getNegativeHighlightColor()
+                val textColor = if (selectedSMod != null && selectedSMod == sMod) red else gray
                 innerElement.addPara(sMod.displayName, 0f, textColor, textColor).apply {
                     position.rightOfMid(sprite.elementPanel, 10f)
                 }
@@ -148,6 +156,72 @@ class ASMRefitButton : BaseRefitButton() {
                     refreshPanel(member, variant)
                 }
             }
+
+            sModsElement!!.addTooltipToPrevious(object : TooltipMakerAPI.TooltipCreator {
+                override fun isTooltipExpandable(tooltipParam: Any?): Boolean {
+                    return false
+                }
+
+                override fun getTooltipWidth(tooltipParam: Any?): Float {
+                    return 380f
+                }
+
+                override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
+                    tooltip!!.addPara(sMod.displayName, cyan, 0f)
+                    tooltip.addSpacer(10f)
+
+                    if (sMod.manufacturer != "Common") {
+                        tooltip.addPara(
+                            "Design Type: %s",
+                            0f,
+                            darkGray,
+                            Misc.getDesignTypeColor(sMod.manufacturer),
+                            sMod.manufacturer
+                        )
+                        tooltip.addSpacer(10f)
+                    }
+
+                    val sModParams = arrayOf(
+                        sMod.effect.getDescriptionParam(0, variant!!.hullSize),
+                        sMod.effect.getDescriptionParam(1, variant.hullSize),
+                        sMod.effect.getDescriptionParam(2, variant.hullSize),
+                        sMod.effect.getDescriptionParam(3, variant.hullSize),
+                        sMod.effect.getDescriptionParam(4, variant.hullSize),
+                        sMod.effect.getDescriptionParam(5, variant.hullSize),
+                        sMod.effect.getDescriptionParam(6, variant.hullSize),
+                        sMod.effect.getDescriptionParam(7, variant.hullSize),
+                        sMod.effect.getDescriptionParam(8, variant.hullSize),
+                        sMod.effect.getDescriptionParam(9, variant.hullSize)
+                    )
+
+                    tooltip.addPara(sMod.descriptionFormat, 0f, gray, yellow, *sModParams)
+
+                    sMod.effect.addPostDescriptionSection(
+                        tooltip,
+                        variant.hullSize,
+                        null,
+                        getTooltipWidth(tooltip),
+                        false
+                    )
+
+                    if (sMod.effect.hasSModEffect()) {
+                        tooltip.addSpacer(10f)
+                        if (!sMod.effect.isSModEffectAPenalty) {
+                            tooltip.addSectionHeading("S-mod bonus", green, darkGreen, Alignment.MID, 0f)
+                        } else {
+                            tooltip.addSectionHeading("S-mod penalty", red, darkRed, Alignment.MID, 0f)
+                        }
+                        sMod.effect.addSModEffectSection(
+                            tooltip,
+                            variant.hullSize,
+                            null,
+                            getTooltipWidth(tooltip),
+                            false,
+                            false
+                        )
+                    }
+                }
+            }, TooltipMakerAPI.TooltipLocation.RIGHT)
         }
         sModsElement.addSpacer(5f)
         sModsPanel.addUIElement(sModsElement)
@@ -167,8 +241,8 @@ class ASMRefitButton : BaseRefitButton() {
             renderBackground = true
             enableTransparency = true
             backgroundAlpha = if (selectedSMod != null) 0.3f else 0.2f
-            backgroundColor = Misc.getNegativeHighlightColor()
-            addText("Remove Installed S-Mod", Misc.getNegativeHighlightColor())
+            backgroundColor = red
+            addText("Remove Installed S-Mod", red)
             centerText()
 
             onHoverEnter {
@@ -202,10 +276,11 @@ class ASMRefitButton : BaseRefitButton() {
             renderBackground = true
             enableTransparency = true
             backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
-            backgroundColor = Misc.getStoryOptionColor()
-            addText("Increase Max S-Mod Limit (%s)",
-                Misc.getStoryOptionColor(),
-                Misc.getStoryOptionColor(),
+            backgroundColor = green
+            addText(
+                "Increase Max S-Mod Limit (%s)",
+                green,
+                green,
                 listOf("${getStoryPointCost(member).roundToInt()}")
             ).apply {
                 centerText()
