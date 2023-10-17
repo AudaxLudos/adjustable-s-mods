@@ -90,11 +90,11 @@ class ASMRefitButton : BaseRefitButton() {
         val sModsElement = sModsPanel.createUIElement(width, 305f, true)
         sModsElement.addSpacer(5f)
 
-        var installedSMods =
+        var sMods =
             Global.getSettings().allHullModSpecs.filter { it.id in variant!!.sMods || it.id in variant.sModdedBuiltIns }
-        installedSMods = installedSMods.sortedBy { it.displayName }
+        sMods = sMods.sortedBy { it.displayName }
 
-        for (sMod in installedSMods) {
+        for (sMod in sMods) {
             sModsElement.addLunaElement(390f, 40f).apply {
                 renderBorder = false
                 renderBackground = true
@@ -149,6 +149,84 @@ class ASMRefitButton : BaseRefitButton() {
         }
         sModsElement.addSpacer(5f)
         sModsPanel.addUIElement(sModsElement)
+
+        val footerPanel = mainPanel!!.createCustomPanel(width, 200f, null)
+        mainPanel!!.addComponent(footerPanel)
+        footerPanel.position.belowMid(sModsPanel, 0f)
+
+        val footerElement = footerPanel.createUIElement(width, 200f, true)
+        footerElement.addSectionHeading("Options", Alignment.MID, 10f).apply {
+            position.setSize(position.width + 10f, position.height)
+        }
+        footerElement.addSpacer(5f)
+
+        val removeSModButton = footerElement.addLunaElement(195f, 50f).apply {
+            renderBorder = false
+            renderBackground = true
+            enableTransparency = true
+            backgroundAlpha = if (selectedSMod != null) 0.3f else 0.2f
+            backgroundColor = Misc.getNegativeHighlightColor()
+            addText("Remove Installed S-Mod", Misc.getNegativeHighlightColor())
+            centerText()
+
+            onHoverEnter {
+                playSound("ui_button_mouseover", 1f, 1f)
+                if (selectedSMod != null)
+                    backgroundAlpha = 0.5f
+            }
+
+            onHoverExit {
+                backgroundAlpha = if (selectedSMod != null) 0.3f else 0.2f
+            }
+
+            onClick {
+                if (!it.isLMBEvent) return@onClick
+                if (selectedSMod == null) {
+                    playSound("ui_button_disabled_pressed", 1f, 1f)
+                    return@onClick
+                }
+
+                playSound("ui_char_decrease_skill", 1f, 1f)
+                selectedSMod = null
+                refreshVariant()
+                refreshButtonList()
+                refreshPanel(member, variant)
+            }
+        }
+
+        val increaseMaxSModButton = footerElement.addLunaElement(195f, 50f).apply {
+            renderBorder = false
+            renderBackground = true
+            enableTransparency = true
+            backgroundAlpha = 0.3f
+            backgroundColor = Misc.getStoryOptionColor()
+            addText(
+                "Increase Max S-Mod Limit",
+                Misc.getStoryOptionColor(),
+            )
+            centerText()
+
+            onHoverEnter {
+                playSound("ui_button_mouseover", 1f, 1f)
+                    backgroundAlpha = 0.5f
+            }
+
+            onHoverExit {
+                backgroundAlpha = 0.3f
+            }
+
+            onClick {
+                if (!it.isLMBEvent) return@onClick
+
+                playSound("ui_char_spent_story_point", 1f, 1f)
+                refreshVariant()
+                refreshButtonList()
+                refreshPanel(member, variant)
+            }
+        }
+        increaseMaxSModButton.position.rightOfMid(removeSModButton.elementPanel, 0f)
+        footerElement.addSpacer(5f)
+        footerPanel.addUIElement(footerElement)
     }
 
     override fun shouldShow(member: FleetMemberAPI?, variant: ShipVariantAPI?, market: MarketAPI?): Boolean {
