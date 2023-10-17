@@ -106,6 +106,15 @@ class ASMRefitButton : BaseRefitButton() {
             Global.getSettings().allHullModSpecs.filter { it.id in variant!!.sMods || it.id in variant.sModdedBuiltIns }
         sMods = sMods.sortedBy { it.displayName }
 
+        if (sMods.isEmpty()) {
+            sModsElement.addLunaElement(sModsElement.widthSoFar, 290f).apply {
+                renderBorder = false
+                renderBackground = false
+                addText("Their are no Installed S-Mods found")
+                centerText()
+            }
+        }
+
         // Generate list of s-mods
         for (sMod in sMods) {
             // Add clickable s-mod button
@@ -227,6 +236,7 @@ class ASMRefitButton : BaseRefitButton() {
                 }
             }, TooltipMakerAPI.TooltipLocation.RIGHT)
         }
+
         sModsElement.addSpacer(5f)
         sModsPanel.addUIElement(sModsElement)
 
@@ -285,7 +295,7 @@ class ASMRefitButton : BaseRefitButton() {
             }
 
             override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
-                tooltip!!.addPara("%s spent on s-mods is not refunded when removed", 0f,gray, green, "Story points")
+                tooltip!!.addPara("%s spent on s-mods is not refunded when removed", 0f, gray, green, "Story points")
             }
         }, TooltipMakerAPI.TooltipLocation.RIGHT)
 
@@ -295,14 +305,9 @@ class ASMRefitButton : BaseRefitButton() {
             enableTransparency = true
             backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
             backgroundColor = green
-            addText(
-                "Increase Max S-Mod Limit (%s)",
-                green,
-                green,
-                listOf("${getStoryPointCost(member).roundToInt()}")
-            ).apply {
-                centerText()
-            }
+            innerElement.addPara("Increase Max S-Mod Limit", green, 10f).apply { setAlignment(Alignment.MID) }
+            innerElement.addPara("(Cost: %s)", 0f, green, green, "${getStoryPointCost(member).roundToInt()}")
+                .apply { setAlignment(Alignment.MID) }
 
             onHoverEnter {
                 playSound("ui_button_mouseover", 1f, 1f)
@@ -341,9 +346,21 @@ class ASMRefitButton : BaseRefitButton() {
             }
 
             override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
-                tooltip!!.addPara("No bonus experience is gained when spending %s on this upgrade", 0f,gray, green, "story points")
+                tooltip!!.addPara(
+                    "No bonus experience is gained when spending %s on this upgrade",
+                    0f,
+                    gray,
+                    green,
+                    "story points"
+                )
                 tooltip.addSpacer(10f)
-                tooltip.addPara("Each upgrade doubles the amount of %s required for the next upgrade", 0f, gray, green, "story points")
+                tooltip.addPara(
+                    "Each upgrade doubles the amount of %s required for the next upgrade",
+                    0f,
+                    gray,
+                    green,
+                    "story points"
+                )
             }
         }, TooltipMakerAPI.TooltipLocation.RIGHT)
 
