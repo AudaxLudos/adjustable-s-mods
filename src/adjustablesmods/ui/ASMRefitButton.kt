@@ -369,6 +369,12 @@ class ASMRefitButton : BaseRefitButton() {
         footerPanel.addUIElement(footerElement)
     }
 
+    override fun onPanelClose(member: FleetMemberAPI?, variant: ShipVariantAPI?, market: MarketAPI?) {
+        backgroundPanel = null
+        mainPanel = null
+        selectedSMod = null
+    }
+
     override fun shouldShow(member: FleetMemberAPI?, variant: ShipVariantAPI?, market: MarketAPI?): Boolean {
         return true
     }

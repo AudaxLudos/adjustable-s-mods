@@ -24,8 +24,9 @@ fun loadData() {
 
 fun getShipData(fleetMember: FleetMemberAPI?): ShipData? {
     var data = SHIP_DATA_LIST.find { it?.id == fleetMember?.id }
-    if (data == null && Global.getSector().campaignUI.currentCoreTab != CoreUITabId.FLEET) {
-        data = ShipData(fleetMember!!.id)
+    if (data == null) {
+        data = fleetMember?.id?.let { ShipData(it) }
+        if (data == null) return null
         SHIP_DATA_LIST.add(data)
     }
     return data

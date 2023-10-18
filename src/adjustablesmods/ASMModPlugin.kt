@@ -6,8 +6,10 @@ import lunalib.lunaRefit.LunaRefitManager
 
 class ASMModPlugin : BaseModPlugin() {
     override fun onApplicationLoad() {
-        super.onApplicationLoad()
-
         LunaRefitManager.addRefitButton(ASMRefitButton())
+    }
+
+    override fun onGameLoad(newGame: Boolean) {
+        loadData()
     }
 }
