@@ -1,9 +1,10 @@
 package adjustablesmods
 
 import com.fs.starfarer.api.Global
-import com.fs.starfarer.api.campaign.CoreUITabId
+import com.fs.starfarer.api.combat.ShipHullSpecAPI
 import com.fs.starfarer.api.combat.ShipVariantAPI
 import com.fs.starfarer.api.fleet.FleetMemberAPI
+import com.fs.starfarer.api.impl.campaign.ids.HullMods
 import kotlin.math.pow
 
 class ShipData(fleetMemberId: String) {
@@ -65,4 +66,10 @@ fun removeInstalledSMod(variant: ShipVariantAPI?, hullModId: String) {
     } else {
         variant.removePermaMod(hullModId)
     }
+}
+
+fun isVariantModule(variant: ShipVariantAPI?): Boolean {
+    return (variant!!.hints.contains(ShipHullSpecAPI.ShipTypeHints.UNBOARDABLE) &&
+            variant.hints.contains(ShipHullSpecAPI.ShipTypeHints.HIDE_IN_CODEX) &&
+            !variant.hasHullMod(HullMods.AUTOMATED))
 }

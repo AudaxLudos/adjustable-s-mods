@@ -236,7 +236,6 @@ class ASMRefitButton : BaseRefitButton() {
                 }
             }, TooltipMakerAPI.TooltipLocation.RIGHT)
         }
-
         sModsElement.addSpacer(5f)
         sModsPanel.addUIElement(sModsElement)
 
@@ -253,9 +252,9 @@ class ASMRefitButton : BaseRefitButton() {
         val removeSModButton = footerElement.addLunaElement(195f, 50f).apply {
             renderBorder = false
             renderBackground = true
-            enableTransparency = true
             backgroundAlpha = if (selectedSMod != null) 0.3f else 0.2f
             backgroundColor = red
+            enableTransparency = true
             addText("Remove Installed S-Mod", red)
             centerText()
 
@@ -302,26 +301,31 @@ class ASMRefitButton : BaseRefitButton() {
         val increaseMaxSModButton = footerElement.addLunaElement(195f, 50f).apply {
             renderBorder = false
             renderBackground = true
-            enableTransparency = true
-            backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
+            backgroundAlpha = if (canIncreaseMaxSModLimit(member) && !isVariantModule(variant)) 0.3f else 0.2f
             backgroundColor = green
-            innerElement.addPara("Increase Max S-Mod Limit", green, 10f).apply { setAlignment(Alignment.MID) }
-            innerElement.addPara("(Cost: %s)", 0f, green, green, "${getStoryPointCost(member).roundToInt()}")
-                .apply { setAlignment(Alignment.MID) }
+            enableTransparency = true
+            if (!isVariantModule(variant)) {
+                innerElement.addPara("Increase Max S-Mod Limit", green, 10f).apply { setAlignment(Alignment.MID) }
+                innerElement.addPara("(Cost: %s)", 0f, green, green, "${getStoryPointCost(member).roundToInt()}")
+                    .apply { setAlignment(Alignment.MID) }
+            } else {
+                addText("Disabled For Modules", baseColor = green, highlightColor = green)
+                centerText()
+            }
 
             onHoverEnter {
                 playSound("ui_button_mouseover", 1f, 1f)
-                if (canIncreaseMaxSModLimit(member))
+                if (canIncreaseMaxSModLimit(member) && !isVariantModule(variant))
                     backgroundAlpha = 0.5f
             }
 
             onHoverExit {
-                backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
+                backgroundAlpha = if (canIncreaseMaxSModLimit(member) && !isVariantModule(variant)) 0.3f else 0.2f
             }
 
             onClick {
                 if (!it.isLMBEvent) return@onClick
-                if (!canIncreaseMaxSModLimit(member)) {
+                if (!canIncreaseMaxSModLimit(member) || isVariantModule(variant)) {
                     playSound("ui_button_disabled_pressed", 1f, 1f)
                     return@onClick
                 }
@@ -363,7 +367,6 @@ class ASMRefitButton : BaseRefitButton() {
                 )
             }
         }, TooltipMakerAPI.TooltipLocation.RIGHT)
-
         increaseMaxSModButton.position.rightOfMid(removeSModButton.elementPanel, 0f)
         footerElement.addSpacer(5f)
         footerPanel.addUIElement(footerElement)
