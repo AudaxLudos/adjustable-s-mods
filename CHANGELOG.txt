@@ -1,3 +1,7 @@
+### 0.5.4
+- Add credits to other modders and game developer
+- Update LICENSE.txt
+- Add github action for automating mod releases
 ### 0.5.0
 - Add initial version check files
 - Update button for increasing max s-mod limit to be disabled for ship modules
