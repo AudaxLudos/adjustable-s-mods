@@ -1,0 +1,16 @@
+### 0.5.0
+- Add initial version check files
+- Update button for increasing max s-mod limit to be disabled for ship modules
+- Fix data not being loaded and crash when changing the ship captain
+- Add UI improvements to certain elements
+- Add tooltips for buttons
+- Add tooltips to list of installed s-mods
+- Add backend implementation to UI
+- Add backend utilities and implementations
+- Add remove s-mod button and increase max s-mod limit button for UI
+- Update list of installed s-mods to be selectable in UI
+- Add list of installed s-mods to initial UI
+- Add initial UI implementation
+- Add initial hull mod implementation
+### 0.0.1
+- Add initial mod files

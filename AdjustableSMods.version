@@ -1,5 +1,5 @@
 {
-    "masterVersionFile": "url goes here",
+    "masterVersionFile": "https://raw.githubusercontent.com/AudaxLudos/adjustable-s-mods/main/AdjustableSMods.version",
     "modName": "Adjustable S-Mods",
     "modVersion": {
         "major": 0,
