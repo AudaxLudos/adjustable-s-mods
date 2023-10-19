@@ -1,0 +1,12 @@
+{
+    "masterVersionFile": "url goes here",
+    "modName": "Adjustable S-Mods",
+    "modVersion": {
+        "major": 0,
+        "minor": 5,
+        "patch": 0
+    },
+    "modThreadId": 24550,
+    "directDownloadURL": "",
+    "changelogURL": "https://raw.githubusercontent.com/AudaxLudos/adjustable-s-mods/main/CHANGELOG.txt"
+}
