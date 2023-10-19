@@ -4,9 +4,9 @@
     "modVersion": {
         "major": 0,
         "minor": 5,
-        "patch": 4
+        "patch": 6
     },
-    "modThreadId": 24550,
-    "directDownloadURL": "",
+    "modThreadId": 0,
+    "directDownloadURL": "https://github.com/AudaxLudos/adjustable-s-mods/releases",
     "changelogURL": "https://raw.githubusercontent.com/AudaxLudos/adjustable-s-mods/main/CHANGELOG.txt"
 }
