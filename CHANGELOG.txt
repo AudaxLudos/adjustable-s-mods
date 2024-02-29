@@ -1,3 +1,6 @@
+### 0.5.7
+- Release 0.5.7
+- Update mod game version to latest
 ### 0.5.6
 - Add mod dependencies
 - Update README.md
