@@ -8,9 +8,4 @@ class ModPlugin : BaseModPlugin() {
     override fun onApplicationLoad() {
         LunaRefitManager.addRefitButton(RefitButton())
     }
-
-    override fun onGameLoad(newGame: Boolean) {
-        loadData()
-        UITabListener.register()
-    }
 }

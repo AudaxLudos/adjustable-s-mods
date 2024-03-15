@@ -1,6 +1,5 @@
 package adjustablesmods.ui
 
-import adjustablesmods.*
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.combat.ShipVariantAPI
@@ -14,6 +13,7 @@ import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaExtensions.addLunaSpriteElement
 import lunalib.lunaRefit.BaseRefitButton
 import lunalib.lunaUI.elements.LunaSpriteElement
+import kotlin.math.pow
 import kotlin.math.roundToInt
 
 class RefitButton : BaseRefitButton() {
@@ -51,7 +51,7 @@ class RefitButton : BaseRefitButton() {
         variant: ShipVariantAPI?,
         market: MarketAPI?
     ) {
-        tooltip.addPara("Options to remove s-mods or to increase the max s-mod limit of a ship", 0f)
+        tooltip.addPara("Options to increase the max s-mod limit or to remove installed s-mods on a ship", 0f)
     }
 
     override fun hasPanel(member: FleetMemberAPI?, variant: ShipVariantAPI?, market: MarketAPI?): Boolean {
@@ -72,7 +72,7 @@ class RefitButton : BaseRefitButton() {
         if (backgroundPanel == null) return
         if (mainPanel != null) backgroundPanel!!.removeComponent(mainPanel)
 
-        val width = getPanelWidth(member, variant)
+        val width = getPanelWidth(member!!, variant!!)
         val height = getPanelHeight(member, variant)
 
         // UI colors
@@ -103,17 +103,16 @@ class RefitButton : BaseRefitButton() {
         sModsElement.addSpacer(5f)
 
         var sMods =
-            Global.getSettings().allHullModSpecs.filter { it.id in variant!!.sMods || it.id in variant.sModdedBuiltIns }
+            Global.getSettings().allHullModSpecs.filter { it.id in variant.sMods || it.id in variant.sModdedBuiltIns }
         sMods = sMods.sortedBy { it.displayName }
 
-        if (sMods.isEmpty()) {
+        if (sMods.isEmpty())
             sModsElement.addLunaElement(sModsElement.widthSoFar, 290f).apply {
                 renderBorder = false
                 renderBackground = false
                 addText("Their are no Installed S-Mods found")
                 centerText()
             }
-        }
 
         // Generate list of s-mods
         for (sMod in sMods) {
@@ -195,7 +194,7 @@ class RefitButton : BaseRefitButton() {
                     }
 
                     val sModParams = arrayOf(
-                        sMod.effect.getDescriptionParam(0, variant!!.hullSize),
+                        sMod.effect.getDescriptionParam(0, variant.hullSize),
                         sMod.effect.getDescriptionParam(1, variant.hullSize),
                         sMod.effect.getDescriptionParam(2, variant.hullSize),
                         sMod.effect.getDescriptionParam(3, variant.hullSize),
@@ -301,33 +300,33 @@ class RefitButton : BaseRefitButton() {
         val increaseMaxSModButton = footerElement.addLunaElement(195f, 50f).apply {
             renderBorder = false
             renderBackground = true
-            backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
+            backgroundAlpha = if (canIncreaseMaxSModLimit(variant)) 0.3f else 0.2f
             backgroundColor = green
             enableTransparency = true
 
             innerElement.addPara("Increase Max S-Mod Limit", green, 10f).apply { setAlignment(Alignment.MID) }
-            innerElement.addPara("(Cost: %s)", 0f, green, green, "${getStoryPointCost(member).roundToInt()}")
+            innerElement.addPara("(Cost: %s)", 0f, green, green, "${getStoryPointCost(variant).roundToInt()}")
                 .apply { setAlignment(Alignment.MID) }
 
             onHoverEnter {
                 playSound("ui_button_mouseover", 1f, 1f)
-                if (canIncreaseMaxSModLimit(member))
+                if (canIncreaseMaxSModLimit(variant))
                     backgroundAlpha = 0.5f
             }
 
             onHoverExit {
-                backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
+                backgroundAlpha = if (canIncreaseMaxSModLimit(variant)) 0.3f else 0.2f
             }
 
             onClick {
                 if (!it.isLMBEvent) return@onClick
-                if (!canIncreaseMaxSModLimit(member)) {
+                if (!canIncreaseMaxSModLimit(variant)) {
                     playSound("ui_button_disabled_pressed", 1f, 1f)
                     return@onClick
                 }
 
                 playSound("ui_char_spent_story_point", 1f, 1f)
-                incrementMaxSModLimit(member)
+                incrementMaxSModLimit(variant)
                 installSModTracker(variant)
                 selectedSMod = null
                 refreshVariant()
@@ -376,5 +375,46 @@ class RefitButton : BaseRefitButton() {
 
     override fun shouldShow(member: FleetMemberAPI?, variant: ShipVariantAPI?, market: MarketAPI?): Boolean {
         return true
+    }
+
+    private fun getStoryPointCost(shipVariant: ShipVariantAPI): Float {
+        val tag = shipVariant.tags.firstOrNull { it.contains("asm_max_smod_limit:") }
+        if (tag == null) {
+            return 2f.pow(0 + 1f)
+        }
+
+        val maxSModLimit = tag.replace("asm_max_smod_limit:", "")
+        return 2f.pow(maxSModLimit.toInt() + 1f)
+    }
+
+    private fun incrementMaxSModLimit(shipVariant: ShipVariantAPI) {
+        var tag = shipVariant.tags.firstOrNull { it.contains("asm_max_smod_limit:") }
+        if (tag != null) {
+            tag = shipVariant.tags?.firstOrNull { it.contains("asm_max_smod_limit:") }
+            var maxSModLimit = tag!!.replace("asm_max_smod_limit:", "").toInt()
+            maxSModLimit += 1
+
+            shipVariant.removeTag(tag)
+            shipVariant.addTag("asm_max_smod_limit:$maxSModLimit")
+        } else {
+            shipVariant.addTag("asm_max_smod_limit:1")
+        }
+    }
+
+    private fun canIncreaseMaxSModLimit(shipVariant: ShipVariantAPI): Boolean {
+        return Global.getSector().playerStats.storyPoints >= getStoryPointCost(shipVariant)
+    }
+
+    private fun installSModTracker(variant: ShipVariantAPI) {
+        if (!variant.hasHullMod("asm_feature_creep"))
+            variant.addPermaMod("asm_feature_creep", false)
+    }
+
+    private fun removeInstalledSMod(variant: ShipVariantAPI, hullModId: String) {
+        if (variant.sModdedBuiltIns.contains(hullModId)) {
+            variant.sModdedBuiltIns.remove(hullModId)
+        } else {
+            variant.removePermaMod(hullModId)
+        }
     }
 }
