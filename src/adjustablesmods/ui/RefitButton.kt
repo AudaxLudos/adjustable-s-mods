@@ -1,5 +1,8 @@
 package adjustablesmods.ui
 
+import adjustablesmods.ui.tooltips.CustomHullmodToolTip
+import adjustablesmods.ui.tooltips.IncreaseSModLimitTooltip
+import adjustablesmods.ui.tooltips.RemoveHullmodTooltip
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.combat.ShipVariantAPI
@@ -77,13 +80,8 @@ class RefitButton : BaseRefitButton() {
 
         // UI colors
         val gray = Misc.getTextColor()
-        val darkGray = Misc.getGrayColor()
         val green = Misc.getStoryOptionColor()
-        val darkGreen = Misc.getStoryDarkColor()
         val red = Misc.getNegativeHighlightColor()
-        val darkRed = Misc.setAlpha(Misc.scaleColorOnly(Misc.getNegativeHighlightColor(), 0.4f), 175)
-        val yellow = Misc.getHighlightColor()
-        val cyan = Misc.getBasePlayerColor()
 
         mainPanel = backgroundPanel!!.createCustomPanel(width, height, null)
         backgroundPanel!!.addComponent(mainPanel)
@@ -169,71 +167,10 @@ class RefitButton : BaseRefitButton() {
             }
 
             // Add tooltip to s-mod
-            sModsElement!!.addTooltipToPrevious(object : TooltipMakerAPI.TooltipCreator {
-                override fun isTooltipExpandable(tooltipParam: Any?): Boolean {
-                    return false
-                }
-
-                override fun getTooltipWidth(tooltipParam: Any?): Float {
-                    return 380f
-                }
-
-                override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
-                    tooltip!!.addPara(sMod.displayName, cyan, 0f)
-                    tooltip.addSpacer(10f)
-
-                    if (sMod.manufacturer != "Common") {
-                        tooltip.addPara(
-                            "Design Type: %s",
-                            0f,
-                            darkGray,
-                            Misc.getDesignTypeColor(sMod.manufacturer),
-                            sMod.manufacturer
-                        )
-                        tooltip.addSpacer(10f)
-                    }
-
-                    val sModParams = arrayOf(
-                        sMod.effect.getDescriptionParam(0, variant.hullSize),
-                        sMod.effect.getDescriptionParam(1, variant.hullSize),
-                        sMod.effect.getDescriptionParam(2, variant.hullSize),
-                        sMod.effect.getDescriptionParam(3, variant.hullSize),
-                        sMod.effect.getDescriptionParam(4, variant.hullSize),
-                        sMod.effect.getDescriptionParam(5, variant.hullSize),
-                        sMod.effect.getDescriptionParam(6, variant.hullSize),
-                        sMod.effect.getDescriptionParam(7, variant.hullSize),
-                        sMod.effect.getDescriptionParam(8, variant.hullSize),
-                        sMod.effect.getDescriptionParam(9, variant.hullSize)
-                    )
-
-                    tooltip.addPara(sMod.descriptionFormat, 0f, gray, yellow, *sModParams)
-
-                    sMod.effect.addPostDescriptionSection(
-                        tooltip,
-                        variant.hullSize,
-                        null,
-                        getTooltipWidth(tooltip),
-                        false
-                    )
-
-                    if (sMod.effect.hasSModEffect()) {
-                        tooltip.addSpacer(10f)
-                        if (!sMod.effect.isSModEffectAPenalty) {
-                            tooltip.addSectionHeading("S-mod bonus", green, darkGreen, Alignment.MID, 0f)
-                        } else {
-                            tooltip.addSectionHeading("S-mod penalty", red, darkRed, Alignment.MID, 0f)
-                        }
-                        sMod.effect.addSModEffectSection(
-                            tooltip,
-                            variant.hullSize,
-                            null,
-                            getTooltipWidth(tooltip),
-                            false,
-                            false
-                        )
-                    }
-                }
-            }, TooltipMakerAPI.TooltipLocation.RIGHT)
+            sModsElement!!.addTooltipToPrevious(
+                CustomHullmodToolTip(sMod, variant.hullSize),
+                TooltipMakerAPI.TooltipLocation.RIGHT
+            )
         }
         sModsElement.addSpacer(5f)
         sModsPanel.addUIElement(sModsElement)
@@ -283,19 +220,7 @@ class RefitButton : BaseRefitButton() {
             }
         }
 
-        footerElement!!.addTooltipToPrevious(object : TooltipMakerAPI.TooltipCreator {
-            override fun isTooltipExpandable(tooltipParam: Any?): Boolean {
-                return false
-            }
-
-            override fun getTooltipWidth(tooltipParam: Any?): Float {
-                return 380f
-            }
-
-            override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
-                tooltip!!.addPara("%s spent on s-mods are not refunded when removed", 0f, gray, green, "Story points")
-            }
-        }, TooltipMakerAPI.TooltipLocation.RIGHT)
+        footerElement!!.addTooltipToPrevious(RemoveHullmodTooltip(), TooltipMakerAPI.TooltipLocation.RIGHT)
 
         val increaseMaxSModButton = footerElement.addLunaElement(195f, 50f).apply {
             renderBorder = false
@@ -335,33 +260,7 @@ class RefitButton : BaseRefitButton() {
             }
         }
 
-        footerElement.addTooltipToPrevious(object : TooltipMakerAPI.TooltipCreator {
-            override fun isTooltipExpandable(tooltipParam: Any?): Boolean {
-                return false
-            }
-
-            override fun getTooltipWidth(tooltipParam: Any?): Float {
-                return 380f
-            }
-
-            override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
-                tooltip!!.addPara(
-                    "No bonus experience is gained when spending %s on this upgrade",
-                    0f,
-                    gray,
-                    green,
-                    "story points"
-                )
-                tooltip.addSpacer(10f)
-                tooltip.addPara(
-                    "Each upgrade doubles the amount of %s required for the next upgrade",
-                    0f,
-                    gray,
-                    green,
-                    "story points"
-                )
-            }
-        }, TooltipMakerAPI.TooltipLocation.RIGHT)
+        footerElement.addTooltipToPrevious(IncreaseSModLimitTooltip(), TooltipMakerAPI.TooltipLocation.RIGHT)
         increaseMaxSModButton.position.rightOfMid(removeSModButton.elementPanel, 0f)
         footerElement.addSpacer(5f)
         footerPanel.addUIElement(footerElement)
