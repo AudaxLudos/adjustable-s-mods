@@ -1,3 +1,8 @@
+### 0.6.0
+- Update UI to work on ship modules
+- Update fix feature creep hullmod to work on ship modules
+- Update ship modules can now be modified
+
 ### 0.5.7
 - Release 0.5.7
 - Update mod game version to latest
