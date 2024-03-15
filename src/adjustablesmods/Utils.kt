@@ -67,20 +67,38 @@ fun createModuleDataList(fleetMember: FleetMemberAPI?): MutableList<ModuleData> 
 
 fun getStoryPointCost(fleetMember: FleetMemberAPI?): Float {
     val data = getShipData(fleetMember!!)
+    if (isShipModule(fleetMember)) {
+        val moduleData = data!!.modules.find { it.moduleSlot == getModuleTag(fleetMember) }
+        return 2f.pow(moduleData!!.maxSModModifier + 1f)
+    }
+
     return 2f.pow(data!!.maxSModModifier + 1f)
 }
 
 fun incrementMaxSModLimit(fleetMember: FleetMemberAPI?) {
     val data = getShipData(fleetMember!!)
-    Global.getSector().playerStats.spendStoryPoints(
-        getStoryPointCost(fleetMember).toInt(),
-        true,
-        null,
-        true,
-        0f,
-        null
-    )
-    data!!.maxSModModifier++
+    if (isShipModule(fleetMember)) {
+        val moduleData = data!!.modules.find { it.moduleSlot == getModuleTag(fleetMember) }
+        Global.getSector().playerStats.spendStoryPoints(
+            getStoryPointCost(fleetMember).toInt(),
+            true,
+            null,
+            true,
+            0f,
+            null
+        )
+        moduleData!!.maxSModModifier++
+    } else {
+        Global.getSector().playerStats.spendStoryPoints(
+            getStoryPointCost(fleetMember).toInt(),
+            true,
+            null,
+            true,
+            0f,
+            null
+        )
+        data!!.maxSModModifier++
+    }
 }
 
 fun canIncreaseMaxSModLimit(fleetMember: FleetMemberAPI?): Boolean {
@@ -100,8 +118,13 @@ fun removeInstalledSMod(variant: ShipVariantAPI?, hullModId: String) {
     }
 }
 
-fun isVariantModule(variant: ShipVariantAPI?): Boolean {
-    return (variant!!.hints.contains(ShipHullSpecAPI.ShipTypeHints.UNBOARDABLE) &&
-            variant.hints.contains(ShipHullSpecAPI.ShipTypeHints.HIDE_IN_CODEX) &&
-            !variant.hasHullMod(HullMods.AUTOMATED))
+fun isShipModule(fleetMember: FleetMemberAPI?): Boolean {
+    val tag = getModuleTag(fleetMember)
+    return tag != null
+}
+
+fun getModuleTag(fleetMember: FleetMemberAPI?): String? {
+    var tag = fleetMember?.variant?.tags?.firstOrNull() { it.contains("asm_slot_id_") }
+    tag = tag?.replace("asm_slot_id_", "")
+    return tag
 }

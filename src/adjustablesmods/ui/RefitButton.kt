@@ -294,7 +294,7 @@ class RefitButton : BaseRefitButton() {
             }
 
             override fun createTooltip(tooltip: TooltipMakerAPI?, expanded: Boolean, tooltipParam: Any?) {
-                tooltip!!.addPara("%s spent on s-mods is not refunded when removed", 0f, gray, green, "Story points")
+                tooltip!!.addPara("%s spent on s-mods are not refunded when removed", 0f, gray, green, "Story points")
             }
         }, TooltipMakerAPI.TooltipLocation.RIGHT)
 
