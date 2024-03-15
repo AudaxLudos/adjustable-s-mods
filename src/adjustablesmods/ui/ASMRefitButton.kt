@@ -301,31 +301,27 @@ class ASMRefitButton : BaseRefitButton() {
         val increaseMaxSModButton = footerElement.addLunaElement(195f, 50f).apply {
             renderBorder = false
             renderBackground = true
-            backgroundAlpha = if (canIncreaseMaxSModLimit(member) && !isVariantModule(variant)) 0.3f else 0.2f
+            backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
             backgroundColor = green
             enableTransparency = true
-            if (!isVariantModule(variant)) {
-                innerElement.addPara("Increase Max S-Mod Limit", green, 10f).apply { setAlignment(Alignment.MID) }
-                innerElement.addPara("(Cost: %s)", 0f, green, green, "${getStoryPointCost(member).roundToInt()}")
-                    .apply { setAlignment(Alignment.MID) }
-            } else {
-                addText("Disabled For Modules", baseColor = green, highlightColor = green)
-                centerText()
-            }
+
+            innerElement.addPara("Increase Max S-Mod Limit", green, 10f).apply { setAlignment(Alignment.MID) }
+            innerElement.addPara("(Cost: %s)", 0f, green, green, "${getStoryPointCost(member).roundToInt()}")
+                .apply { setAlignment(Alignment.MID) }
 
             onHoverEnter {
                 playSound("ui_button_mouseover", 1f, 1f)
-                if (canIncreaseMaxSModLimit(member) && !isVariantModule(variant))
+                if (canIncreaseMaxSModLimit(member))
                     backgroundAlpha = 0.5f
             }
 
             onHoverExit {
-                backgroundAlpha = if (canIncreaseMaxSModLimit(member) && !isVariantModule(variant)) 0.3f else 0.2f
+                backgroundAlpha = if (canIncreaseMaxSModLimit(member)) 0.3f else 0.2f
             }
 
             onClick {
                 if (!it.isLMBEvent) return@onClick
-                if (!canIncreaseMaxSModLimit(member) || isVariantModule(variant)) {
+                if (!canIncreaseMaxSModLimit(member)) {
                     playSound("ui_button_disabled_pressed", 1f, 1f)
                     return@onClick
                 }

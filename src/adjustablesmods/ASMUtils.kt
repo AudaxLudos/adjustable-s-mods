@@ -24,13 +24,21 @@ fun loadData() {
 }
 
 fun getShipData(fleetMember: FleetMemberAPI?): ShipData? {
-    var data = SHIP_DATA_LIST.find { it?.id == fleetMember?.id }
+    var fm = getFleetMemberFromTag(fleetMember)
+    if (fm == null) fm = fleetMember
+    var data = SHIP_DATA_LIST.find { it?.id == fm?.id }
     if (data == null) {
-        data = fleetMember?.id?.let { ShipData(it) }
+        data = fm?.id?.let { ShipData(it) }
         if (data == null) return null
         SHIP_DATA_LIST.add(data)
     }
     return data
+}
+
+fun getFleetMemberFromTag(fleetMember: FleetMemberAPI?): FleetMemberAPI? {
+    val tag = fleetMember?.variant?.tags?.find { it.contains("asm_") }
+    val id = tag?.replace("asm_", "")
+    return Global.getSector().playerFleet.fleetData.membersListCopy.find { it.id == id }
 }
 
 fun getStoryPointCost(fleetMember: FleetMemberAPI?): Float {
