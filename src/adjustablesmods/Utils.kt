@@ -7,8 +7,15 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI
 import com.fs.starfarer.api.impl.campaign.ids.HullMods
 import kotlin.math.pow
 
+
 class ShipData(fleetMemberId: String) {
     var id: String = fleetMemberId
+    var maxSModModifier: Float = 0f
+    var modules: MutableList<ModuleData> = mutableListOf()
+}
+
+class ModuleData(moduleSlotId: String) {
+    var moduleSlot: String = moduleSlotId
     var maxSModModifier: Float = 0f
 }
 
@@ -18,7 +25,6 @@ fun loadData() {
     if (!Global.getSector().persistentData.containsKey("ASMShipDataList")) {
         Global.getSector().persistentData["ASMShipDataList"] = SHIP_DATA_LIST
     } else {
-        @Suppress("UNCHECKED_CAST")
         SHIP_DATA_LIST = Global.getSector().persistentData["ASMShipDataList"] as MutableList<ShipData?>
     }
 }
@@ -30,15 +36,33 @@ fun getShipData(fleetMember: FleetMemberAPI?): ShipData? {
     if (data == null) {
         data = fm?.id?.let { ShipData(it) }
         if (data == null) return null
+
+        data.modules.addAll(createModuleDataList(fm))
         SHIP_DATA_LIST.add(data)
     }
     return data
 }
 
 fun getFleetMemberFromTag(fleetMember: FleetMemberAPI?): FleetMemberAPI? {
-    val tag = fleetMember?.variant?.tags?.find { it.contains("asm_") }
-    val id = tag?.replace("asm_", "")
+    val tag = fleetMember?.variant?.tags?.find { it.contains("asm_id_") }
+    val id = tag?.replace("asm_id_", "")
     return Global.getSector().playerFleet.fleetData.membersListCopy.find { it.id == id }
+}
+
+fun createModuleDataList(fleetMember: FleetMemberAPI?): MutableList<ModuleData> {
+    val moduleDataList: MutableList<ModuleData> = mutableListOf()
+    val shipVariant = fleetMember?.variant
+    if (shipVariant?.moduleSlots != null) {
+        for (i in shipVariant.moduleSlots.indices) {
+            val moduleVariant: ShipVariantAPI = shipVariant.getModuleVariant(shipVariant.moduleSlots[i])
+            if (moduleVariant.hullSpec.getOrdnancePoints(null) <= 0)
+                continue
+
+            moduleDataList.add(ModuleData(shipVariant.moduleSlots[i]))
+        }
+    }
+
+    return moduleDataList
 }
 
 fun getStoryPointCost(fleetMember: FleetMemberAPI?): Float {

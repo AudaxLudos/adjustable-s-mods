@@ -16,7 +16,7 @@ import lunalib.lunaRefit.BaseRefitButton
 import lunalib.lunaUI.elements.LunaSpriteElement
 import kotlin.math.roundToInt
 
-class ASMRefitButton : BaseRefitButton() {
+class RefitButton : BaseRefitButton() {
     private var backgroundPanel: CustomPanelAPI? = null
     private var mainPanel: CustomPanelAPI? = null
     private var selectedSMod: HullModSpecAPI? = null

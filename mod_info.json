@@ -8,7 +8,7 @@
     "jars": [
         "AdjustableSMods.jar"
     ],
-    "modPlugin": "adjustablesmods.ASMModPlugin",
+    "modPlugin": "adjustablesmods.ModPlugin",
     "dependencies": [
         {
             "id": "lunalib",
