@@ -28,14 +28,13 @@ class FeatureCreep : BaseHullMod() {
 
         tooltip.setBulletedListMode(" - ")
         tooltip.addPara(
-            "Increases the ship's max s-mod limit by %s",
+            "Increases the ship's maximum s-mod limit by %s",
             oPad,
             good,
             "${getMaxSModLimit(ship.fleetMember)}"
         )
-        tooltip.addPara("The default limit and other modifiers are not included", pad)
         tooltip.addPara(
-            "Max number of hull mods that can be s-modded is %s",
+            "A maximum of %s hullmods can be s-modded",
             pad,
             b,
             "${Misc.getMaxPermanentMods(ship)}"
