@@ -78,11 +78,6 @@ class RefitButton : BaseRefitButton() {
         val width = getPanelWidth(member!!, variant!!)
         val height = getPanelHeight(member, variant)
 
-        // UI colors
-        val gray = Misc.getTextColor()
-        val green = Misc.getStoryOptionColor()
-        val red = Misc.getNegativeHighlightColor()
-
         mainPanel = backgroundPanel!!.createCustomPanel(width, height, null)
         backgroundPanel!!.addComponent(mainPanel)
         mainPanel!!.position.inTL(0f, 0f)
@@ -142,7 +137,8 @@ class RefitButton : BaseRefitButton() {
                     }
                 }
 
-                val textColor = if (selectedSMod != null && selectedSMod == sMod) red else gray
+                val textColor =
+                    if (selectedSMod != null && selectedSMod == sMod) Misc.getNegativeHighlightColor() else Misc.getTextColor()
                 innerElement.addPara(sMod.displayName, 0f, textColor, textColor).apply {
                     position.rightOfMid(sprite.elementPanel, 10f)
                 }
@@ -189,9 +185,9 @@ class RefitButton : BaseRefitButton() {
             renderBorder = false
             renderBackground = true
             backgroundAlpha = if (selectedSMod != null) 0.3f else 0.2f
-            backgroundColor = red
+            backgroundColor = Misc.getNegativeHighlightColor()
             enableTransparency = true
-            addText("Remove Installed S-Mod", red)
+            addText("Remove Installed S-Mod", Misc.getNegativeHighlightColor())
             centerText()
 
             onHoverEnter {
@@ -226,11 +222,18 @@ class RefitButton : BaseRefitButton() {
             renderBorder = false
             renderBackground = true
             backgroundAlpha = if (canIncreaseMaxSModLimit(variant)) 0.3f else 0.2f
-            backgroundColor = green
+            backgroundColor = Misc.getStoryOptionColor()
             enableTransparency = true
 
-            innerElement.addPara("Increase Max S-Mod Limit", green, 10f).apply { setAlignment(Alignment.MID) }
-            innerElement.addPara("(Cost: %s)", 0f, green, green, "${getStoryPointCost(variant).roundToInt()}")
+            innerElement.addPara("Increase Max S-Mod Limit", Misc.getStoryOptionColor(), 10f)
+                .apply { setAlignment(Alignment.MID) }
+            innerElement.addPara(
+                "(Cost: %s)",
+                0f,
+                Misc.getStoryOptionColor(),
+                Misc.getStoryOptionColor(),
+                "${getStoryPointCost(variant).roundToInt()}"
+            )
                 .apply { setAlignment(Alignment.MID) }
 
             onHoverEnter {
