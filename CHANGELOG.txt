@@ -1,3 +1,8 @@
+### 1.0.0
+- Release 1.0.0
+- Update code structure and format
+- Update implementation for increasing smod limit
+
 ### 0.6.0
 - Update UI to work on ship modules
 - Update fix feature creep hullmod to work on ship modules
@@ -6,14 +11,17 @@
 ### 0.5.7
 - Release 0.5.7
 - Update mod game version to latest
+
 ### 0.5.6
 - Add mod dependencies
 - Update README.md
 - Update mod version to latest
+
 ### 0.5.4
 - Add credits to other modders and game developer
 - Update LICENSE.txt
 - Add github action for automating mod releases
+
 ### 0.5.0
 - Add initial version check files
 - Update button for increasing max s-mod limit to be disabled for ship modules
@@ -28,5 +36,6 @@
 - Add list of installed s-mods to initial UI
 - Add initial UI implementation
 - Add initial hull mod implementation
+
 ### 0.0.1
 - Add initial mod files
