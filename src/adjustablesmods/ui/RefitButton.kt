@@ -290,17 +290,25 @@ class RefitButton : BaseRefitButton() {
     }
 
     private fun incrementMaxSModLimit(shipVariant: ShipVariantAPI) {
+        var maxSModLimit = 1
         var tag = shipVariant.tags.firstOrNull { it.contains("asm_max_smod_limit:") }
         if (tag != null) {
             tag = shipVariant.tags?.firstOrNull { it.contains("asm_max_smod_limit:") }
-            var maxSModLimit = tag!!.replace("asm_max_smod_limit:", "").toInt()
+            maxSModLimit = tag!!.replace("asm_max_smod_limit:", "").toInt()
             maxSModLimit += 1
 
             shipVariant.removeTag(tag)
-            shipVariant.addTag("asm_max_smod_limit:$maxSModLimit")
-        } else {
-            shipVariant.addTag("asm_max_smod_limit:1")
         }
+
+        shipVariant.addTag("asm_max_smod_limit:$maxSModLimit")
+        Global.getSector().playerStats.spendStoryPoints(
+            maxSModLimit,
+            true,
+            null,
+            true,
+            0f,
+            null
+        )
     }
 
     private fun canIncreaseMaxSModLimit(shipVariant: ShipVariantAPI): Boolean {
