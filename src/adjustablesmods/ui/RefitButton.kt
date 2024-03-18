@@ -302,7 +302,7 @@ class RefitButton : BaseRefitButton() {
 
         shipVariant.addTag("asm_max_smod_limit:$maxSModLimit")
         Global.getSector().playerStats.spendStoryPoints(
-            maxSModLimit,
+            getStoryPointCost(shipVariant).toInt(),
             true,
             null,
             true,
