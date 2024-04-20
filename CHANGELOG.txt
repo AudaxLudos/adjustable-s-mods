@@ -1,3 +1,9 @@
+### 1.0.8
+- Release 1.0.8
+- Update change code format to java from kotlin
+- Update LICENSE to CC-BY-NC-SA
+- Update GitHub action script
+
 ### 1.0.3
 - Release 1.0.3
 - Fix bug story points reduction not multiplied by 2

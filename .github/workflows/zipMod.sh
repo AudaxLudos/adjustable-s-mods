@@ -14,7 +14,7 @@ modVersion=$(echo "$json" | jq -r '.version')
 outputFolderName=$(echo "$json" | jq -r '.name')
 
 # Rename the text before modVersion
-noSpaceName=$(echo "$outputFolderName" | sed 's/ //g')
+noSpaceName=$(echo "$outputFolderName" | sed 's/[^a-zA-Z0-9]//g')
 zipName="$noSpaceName-$modVersion.zip"
 
 # Recreate the temp folder if it happens to be present.
