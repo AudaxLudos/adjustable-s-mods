@@ -25,7 +25,7 @@ import java.util.List;
 public class SModRefitButton extends BaseRefitButton {
     public final float WIDTH = 380f;
     public final float HEIGHT = 426f;
-    public HullModSpecAPI selectedSMod = null;
+    public List<HullModSpecAPI> selectedSMods = new ArrayList<>();
     public List<ButtonAPI> sModButtons = new ArrayList<>();
     public ButtonAPI removeSModButton = null;
     public ButtonAPI increaseSModLimitButton = null;
@@ -151,7 +151,7 @@ public class SModRefitButton extends BaseRefitButton {
         TooltipMakerAPI removeSModElement = removeSModPanel.createUIElement(width / 2f, 25f, false);
         removeSModElement.setButtonFontOrbitron20();
         removeSModButton = removeSModElement.addButton("Remove", "remove_smod", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.ALL, WIDTH / 2f - 40f, 25f, 0f);
-        removeSModButton.setEnabled(selectedSMod != null);
+        removeSModButton.setEnabled(!selectedSMods.isEmpty());
         removeSModButton.getPosition().inBMid(0f);
         removeSModElement.addTooltipTo(new RemoveSModTooltip(this, member), removeSModButton, TooltipMakerAPI.TooltipLocation.RIGHT);
         removeSModPanel.addUIElement(removeSModElement);
@@ -173,6 +173,6 @@ public class SModRefitButton extends BaseRefitButton {
 
     @Override
     public void onPanelClose(FleetMemberAPI member, ShipVariantAPI variant, MarketAPI market) {
-        selectedSMod = null;
+        selectedSMods.clear();
     }
 }

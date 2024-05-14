@@ -21,10 +21,12 @@ public class ConfirmButtonPlugin extends BaseCustomUIPanelPlugin {
         if (!(buttonId instanceof String)) return;
 
         if (buttonId == "remove_smod") {
-            if (refitButton.selectedSMod == null) return;
+            if (refitButton.selectedSMods.isEmpty()) return;
             Global.getSoundPlayer().playSound("ui_char_spent_story_point", 1f, 1f, Global.getSoundPlayer().getListenerPos(), new Vector2f());
-            Global.getSector().getPlayerStats().spendStoryPoints(1, true, null, true, 0f, null);
-            Utils.removeSMod(variant, refitButton.selectedSMod);
+            Global.getSector().getPlayerStats().spendStoryPoints(refitButton.selectedSMods.size(), true, null, true, 0f, null);
+            for (int i = 0; i < refitButton.selectedSMods.size(); i++) {
+                Utils.removeSMod(variant, refitButton.selectedSMods.get(i));
+            }
             refitButton.refreshVariant();
             refitButton.closePanel();
         } else if (buttonId == "increase_limit") {

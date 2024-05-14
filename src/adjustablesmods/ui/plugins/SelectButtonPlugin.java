@@ -20,27 +20,23 @@ public class SelectButtonPlugin extends BaseCustomUIPanelPlugin {
     @Override
     public void buttonPressed(Object buttonId) {
         if (buttonId instanceof HullModSpecAPI) {
-            refitButton.selectedSMod = (HullModSpecAPI) buttonId;
+            if (!refitButton.selectedSMods.contains((HullModSpecAPI) buttonId)) {
+                refitButton.selectedSMods.add((HullModSpecAPI) buttonId);
+            } else {
+                refitButton.selectedSMods.remove((HullModSpecAPI) buttonId);
+            }
         }
 
-        boolean isHighlighted = false;
         for (ButtonAPI button : refitButton.sModButtons) {
-            if (button.getCustomData() == buttonId && !button.isHighlighted()) {
+            if (refitButton.selectedSMods.contains((HullModSpecAPI) button.getCustomData())) {
                 button.highlight();
-                isHighlighted = true;
-                continue;
-            }
-            if (button.isHighlighted()) {
+            } else {
                 button.unhighlight();
             }
         }
 
-        if (!isHighlighted) {
-            refitButton.selectedSMod = null;
-        }
-
         if (refitButton.removeSModButton != null)
-            refitButton.removeSModButton.setEnabled(refitButton.selectedSMod != null);
+            refitButton.removeSModButton.setEnabled(!refitButton.selectedSMods.isEmpty());
         if (refitButton.increaseSModLimitButton != null)
             refitButton.increaseSModLimitButton.setEnabled(!(Global.getSector().getPlayerStats().getStoryPoints() < Utils.getStoryPointCost(variant)));
     }
