@@ -2,7 +2,7 @@
     "id": "adjustablesmods",
     "name": "Adjustable S-Mods",
     "author": "Audax",
-    "version": "1.0.9",
+    "version": "1.1.1",
     "description": "Allows the player to remove s-mods or to increase the max s-mod limit of a ship",
     "gameVersion": "0.97a",
     "jars": [

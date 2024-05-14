@@ -14,16 +14,6 @@ public class BorderedPanelPlugin extends BaseCustomUIPanelPlugin {
     public Color borderColor = Misc.getDarkPlayerColor();
     public float alpha = 1f;
 
-    public BorderedPanelPlugin() {
-    }
-
-    public BorderedPanelPlugin(boolean renderBackground, Color backgroundColor, Color borderColor, float alpha) {
-        this.renderBackground = renderBackground;
-        this.backgroundColor = backgroundColor;
-        this.borderColor = borderColor;
-        this.alpha = alpha;
-    }
-
     @Override
     public void positionChanged(PositionAPI position) {
         this.position = position;
