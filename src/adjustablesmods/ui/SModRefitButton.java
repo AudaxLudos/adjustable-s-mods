@@ -72,19 +72,16 @@ public class SModRefitButton extends BaseRefitButton {
 
     @Override
     public void initPanel(CustomPanelAPI backgroundPanel, FleetMemberAPI member, ShipVariantAPI variant, MarketAPI market) {
-        CustomPanelAPI mPanel = backgroundPanel.createCustomPanel(WIDTH, HEIGHT, null);
-        backgroundPanel.addComponent(mPanel);
-
-        TooltipMakerAPI mElement = mPanel.createUIElement(WIDTH, HEIGHT, false);
-        mPanel.addUIElement(mElement);
+        TooltipMakerAPI mElement = backgroundPanel.createUIElement(WIDTH, HEIGHT, false);
+        backgroundPanel.addUIElement(mElement);
 
         float width = WIDTH - 20f;
 
-        CustomPanelAPI headerPanel = mPanel.createCustomPanel(width, 320f, new BorderedPanelPlugin());
+        CustomPanelAPI headerPanel = backgroundPanel.createCustomPanel(width, 320f, new BorderedPanelPlugin());
         TooltipMakerAPI headerElement = headerPanel.createUIElement(width, 320f, false);
         headerElement.addSectionHeading("Installed S-Mods", Alignment.MID, 0f);
 
-        CustomPanelAPI sModsPanel = mPanel.createCustomPanel(width, 300f, null);
+        CustomPanelAPI sModsPanel = backgroundPanel.createCustomPanel(width, 300f, null);
         TooltipMakerAPI sModsElement = sModsPanel.createUIElement(width, 300f, true);
 
         List<HullModSpecAPI> sMods = new ArrayList<>();
@@ -106,7 +103,7 @@ public class SModRefitButton extends BaseRefitButton {
             sModsText.getPosition().inTL(width / 2f - sModsText.computeTextWidth(sModsText.getText()) / 2, 300f / 2f - sModsText.computeTextHeight(sModsText.getText()) / 2);
         } else {
             for (HullModSpecAPI sMod : sMods) {
-                CustomPanelAPI sModPanel = mPanel.createCustomPanel(width, 44f, new SelectButtonPlugin(this, variant));
+                CustomPanelAPI sModPanel = backgroundPanel.createCustomPanel(width, 44f, new SelectButtonPlugin(this, variant));
                 TooltipMakerAPI sModNameElement = sModPanel.createUIElement(width, 40f, false);
                 TooltipMakerAPI sModImage = sModNameElement.beginImageWithText(sMod.getSpriteName(), 40f);
                 sModImage.addPara(sMod.getDisplayName(), Misc.getTextColor(), 0f);
@@ -134,20 +131,17 @@ public class SModRefitButton extends BaseRefitButton {
         headerPanel.addUIElement(headerElement);
         mElement.addCustom(headerPanel, 10f).getPosition().setXAlignOffset(10f);
 
-        CustomPanelAPI footerPanel = mPanel.createCustomPanel(width, 100f, null);
+        CustomPanelAPI footerPanel = backgroundPanel.createCustomPanel(width, 100f, null);
         TooltipMakerAPI footerElement = footerPanel.createUIElement(width, 100f, false);
 
-        CustomPanelAPI storyPointsPanel = mPanel.createCustomPanel(width, 40f, null);
+        CustomPanelAPI storyPointsPanel = backgroundPanel.createCustomPanel(width, 40f, null);
         TooltipMakerAPI storyPointsElement = storyPointsPanel.createUIElement(width, 40f, false);
         storyPointsElement.setParaFontOrbitron();
-        storyPointsElement.addPara("Story points", Misc.getBasePlayerColor(), 0f).setAlignment(Alignment.MID);
-        storyPointsElement.addSpacer(3f);
-        storyPointsElement.setParaInsigniaLarge();
-        storyPointsElement.addPara(Global.getSector().getPlayerStats().getStoryPoints() + "", Misc.getStoryOptionColor(), 0f).setAlignment(Alignment.MID);
+        storyPointsElement.addLabelledValue("Story points remaining", Global.getSector().getPlayerStats().getStoryPoints() + "", Misc.getBasePlayerColor(), Misc.getStoryOptionColor(), width, 0f);
         storyPointsPanel.addUIElement(storyPointsElement);
         footerElement.addCustom(storyPointsPanel, 0f).getPosition().setXAlignOffset(-10f);
 
-        CustomPanelAPI removeSModPanel = mPanel.createCustomPanel(width / 2f, 25f, new ConfirmButtonPlugin(this, variant));
+        CustomPanelAPI removeSModPanel = backgroundPanel.createCustomPanel(width / 2f, 25f, new ConfirmButtonPlugin(this, variant));
         TooltipMakerAPI removeSModElement = removeSModPanel.createUIElement(width / 2f, 25f, false);
         removeSModElement.setButtonFontOrbitron20();
         removeSModButton = removeSModElement.addButton("Remove", "remove_smod", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.ALL, WIDTH / 2f - 40f, 25f, 0f);
@@ -157,7 +151,7 @@ public class SModRefitButton extends BaseRefitButton {
         removeSModPanel.addUIElement(removeSModElement);
         footerElement.addCustom(removeSModPanel, 0f).getPosition().belowLeft(storyPointsPanel, 10f);
 
-        CustomPanelAPI increaseSModLimitPanel = mPanel.createCustomPanel(width / 2f, 25f, new ConfirmButtonPlugin(this, variant));
+        CustomPanelAPI increaseSModLimitPanel = backgroundPanel.createCustomPanel(width / 2f, 25f, new ConfirmButtonPlugin(this, variant));
         TooltipMakerAPI increaseSModLimitElement = increaseSModLimitPanel.createUIElement(width / 2f, 25f, false);
         increaseSModLimitElement.setButtonFontOrbitron20();
         increaseSModLimitButton = increaseSModLimitElement.addButton("Increase Limit", "increase_limit", Misc.getStoryOptionColor(), Misc.getStoryDarkColor(), Alignment.MID, CutStyle.ALL, WIDTH / 2f - 40f, 25f, 0f);
