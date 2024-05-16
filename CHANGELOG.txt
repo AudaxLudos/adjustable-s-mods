@@ -1,3 +1,7 @@
+### 1.1.2
+- Release 1.1.2
+- Update refit ui to properly enable and disable buttons
+
 ### 1.1.0
 - Release 1.1.1
 - Update s-mod ui texts

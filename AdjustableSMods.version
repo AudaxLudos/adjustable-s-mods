@@ -4,9 +4,9 @@
     "modVersion": {
         "major": 1,
         "minor": 1,
-        "patch": 1
+        "patch": 2
     },
     "modThreadId": 0,
-    "directDownloadURL": "https://github.com/AudaxLudos/adjustable-s-mods/releases/latest/download/AdjustableSMods-1.1.1.zip",
+    "directDownloadURL": "https://github.com/AudaxLudos/adjustable-s-mods/releases/latest/download/AdjustableSMods-1.1.2.zip",
     "changelogURL": "https://raw.githubusercontent.com/AudaxLudos/adjustable-s-mods/main/CHANGELOG.txt"
 }
