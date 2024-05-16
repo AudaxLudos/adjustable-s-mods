@@ -31,7 +31,9 @@ public class FeatureCreep extends BaseHullMod {
 
     private int getMaxSModLimit(FleetMemberAPI fleetMember) {
         String tag = "";
-        if (fleetMember == null) return 0;
+        if (fleetMember == null) {
+            return 0;
+        }
         if (!fleetMember.getVariant().getTags().isEmpty()) {
             for (String t : fleetMember.getVariant().getTags()) {
                 if (t.contains("asm_max_smod_limit")) {

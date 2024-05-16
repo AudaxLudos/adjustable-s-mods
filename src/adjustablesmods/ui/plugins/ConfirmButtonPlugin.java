@@ -18,10 +18,14 @@ public class ConfirmButtonPlugin extends BaseCustomUIPanelPlugin {
 
     @Override
     public void buttonPressed(Object buttonId) {
-        if (!(buttonId instanceof String)) return;
+        if (!(buttonId instanceof String)) {
+            return;
+        }
 
         if (buttonId == "remove_smod") {
-            if (refitButton.selectedSMods.isEmpty()) return;
+            if (refitButton.selectedSMods.isEmpty()) {
+                return;
+            }
             Global.getSoundPlayer().playSound("ui_char_spent_story_point", 1f, 1f, Global.getSoundPlayer().getListenerPos(), new Vector2f());
             Global.getSector().getPlayerStats().spendStoryPoints(refitButton.selectedSMods.size(), true, null, true, 0f, null);
             for (int i = 0; i < refitButton.selectedSMods.size(); i++) {

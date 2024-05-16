@@ -2,7 +2,6 @@ package adjustablesmods.ui.plugins;
 
 import adjustablesmods.Utils;
 import adjustablesmods.ui.SModRefitButton;
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.BaseCustomUIPanelPlugin;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.loading.HullModSpecAPI;
@@ -35,9 +34,7 @@ public class SelectButtonPlugin extends BaseCustomUIPanelPlugin {
             }
         }
 
-        if (refitButton.removeSModButton != null)
-            refitButton.removeSModButton.setEnabled(!refitButton.selectedSMods.isEmpty());
-        if (refitButton.increaseSModLimitButton != null)
-            refitButton.increaseSModLimitButton.setEnabled(!(Global.getSector().getPlayerStats().getStoryPoints() < Utils.getStoryPointCost(variant)));
+        refitButton.removeSModButton.setEnabled(!refitButton.selectedSMods.isEmpty() && Utils.canAffordStoryPointsCost(refitButton.selectedSMods.size()));
+        refitButton.increaseSModLimitButton.setEnabled(Utils.canAffordStoryPointsCost(Utils.getStoryPointCost(variant)));
     }
 }

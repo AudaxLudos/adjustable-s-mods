@@ -1,5 +1,6 @@
 package adjustablesmods;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.loading.HullModSpecAPI;
 
@@ -41,8 +42,9 @@ public class Utils {
     }
 
     public static void installSModTracker(ShipVariantAPI variant) {
-        if (!variant.hasHullMod("asm_feature_creep"))
+        if (!variant.hasHullMod("asm_feature_creep")) {
             variant.addPermaMod("asm_feature_creep", false);
+        }
     }
 
     public static void removeSMod(ShipVariantAPI variant, HullModSpecAPI hullMod) {
@@ -51,5 +53,9 @@ public class Utils {
         } else {
             variant.removePermaMod(hullMod.getId());
         }
+    }
+
+    public static boolean canAffordStoryPointsCost(int cost) {
+        return Global.getSector().getPlayerStats().getStoryPoints() >= cost;
     }
 }
