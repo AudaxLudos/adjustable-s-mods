@@ -23,23 +23,23 @@ public class ConfirmButtonPlugin extends BaseCustomUIPanelPlugin {
         }
 
         if (buttonId == "remove_smod") {
-            if (refitButton.selectedSMods.isEmpty()) {
+            if (this.refitButton.selectedSMods.isEmpty()) {
                 return;
             }
             Global.getSoundPlayer().playSound("ui_char_spent_story_point", 1f, 1f, Global.getSoundPlayer().getListenerPos(), new Vector2f());
-            Global.getSector().getPlayerStats().spendStoryPoints(refitButton.selectedSMods.size(), true, null, true, 0f, null);
-            for (int i = 0; i < refitButton.selectedSMods.size(); i++) {
-                Utils.removeSMod(variant, refitButton.selectedSMods.get(i));
+            Global.getSector().getPlayerStats().spendStoryPoints(this.refitButton.selectedSMods.size(), true, null, true, 0f, null);
+            for (int i = 0; i < this.refitButton.selectedSMods.size(); i++) {
+                Utils.removeSMod(this.variant, this.refitButton.selectedSMods.get(i));
             }
-            refitButton.refreshVariant();
-            refitButton.closePanel();
+            this.refitButton.refreshVariant();
+            this.refitButton.closePanel();
         } else if (buttonId == "increase_limit") {
             Global.getSoundPlayer().playSound("ui_char_spent_story_point", 1f, 1f, Global.getSoundPlayer().getListenerPos(), new Vector2f());
-            Global.getSector().getPlayerStats().spendStoryPoints(Utils.getStoryPointCost(variant), true, null, true, 0f, null);
-            Utils.increaseSModLimit(variant);
-            Utils.installSModTracker(variant);
-            refitButton.refreshVariant();
-            refitButton.closePanel();
+            Global.getSector().getPlayerStats().spendStoryPoints(Utils.getStoryPointCost(this.variant), true, null, true, 0f, null);
+            Utils.increaseSModLimit(this.variant);
+            Utils.installSModTracker(this.variant);
+            this.refitButton.refreshVariant();
+            this.refitButton.closePanel();
         }
     }
 }

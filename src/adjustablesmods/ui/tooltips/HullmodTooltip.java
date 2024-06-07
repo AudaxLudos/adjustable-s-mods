@@ -25,41 +25,41 @@ public class HullmodTooltip extends BaseTooltipCreator {
 
     @Override
     public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
-        tooltip.addPara(hullModSpec.getDisplayName(), Misc.getBasePlayerColor(), 0f);
+        tooltip.addPara(this.hullModSpec.getDisplayName(), Misc.getBasePlayerColor(), 0f);
         tooltip.addSpacer(10f);
 
-        if (!Objects.equals(hullModSpec.getManufacturer(), "Common")) {
+        if (!Objects.equals(this.hullModSpec.getManufacturer(), "Common")) {
             tooltip.addPara(
                     "Design Type: %s",
                     0f,
                     Misc.getGrayColor(),
-                    Misc.getDesignTypeColor(hullModSpec.getManufacturer()),
-                    hullModSpec.getManufacturer());
+                    Misc.getDesignTypeColor(this.hullModSpec.getManufacturer()),
+                    this.hullModSpec.getManufacturer());
             tooltip.addSpacer(10f);
         }
 
-        tooltip.addPara(hullModSpec.getDescriptionFormat(), 0f, Misc.getTextColor(), Misc.getHighlightColor(),
-                hullModSpec.getEffect().getDescriptionParam(0, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(1, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(2, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(3, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(4, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(5, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(6, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(7, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(8, hullSize),
-                hullModSpec.getEffect().getDescriptionParam(9, hullSize));
+        tooltip.addPara(this.hullModSpec.getDescriptionFormat(), 0f, Misc.getTextColor(), Misc.getHighlightColor(),
+                this.hullModSpec.getEffect().getDescriptionParam(0, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(1, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(2, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(3, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(4, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(5, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(6, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(7, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(8, this.hullSize),
+                this.hullModSpec.getEffect().getDescriptionParam(9, this.hullSize));
 
-        hullModSpec.getEffect().addPostDescriptionSection(
+        this.hullModSpec.getEffect().addPostDescriptionSection(
                 tooltip,
-                hullSize,
+                this.hullSize,
                 null,
                 getTooltipWidth(tooltip),
                 false);
 
-        if (hullModSpec.getEffect().hasSModEffect()) {
+        if (this.hullModSpec.getEffect().hasSModEffect()) {
             tooltip.addSpacer(10f);
-            if (!hullModSpec.getEffect().isSModEffectAPenalty()) {
+            if (!this.hullModSpec.getEffect().isSModEffectAPenalty()) {
                 tooltip.addSectionHeading(
                         "S-mod bonus",
                         Misc.getStoryOptionColor(),
@@ -74,9 +74,9 @@ public class HullmodTooltip extends BaseTooltipCreator {
                         Alignment.MID,
                         0f);
             }
-            hullModSpec.getEffect().addSModEffectSection(
+            this.hullModSpec.getEffect().addSModEffectSection(
                     tooltip,
-                    hullSize,
+                    this.hullSize,
                     null,
                     getTooltipWidth(tooltip),
                     false,

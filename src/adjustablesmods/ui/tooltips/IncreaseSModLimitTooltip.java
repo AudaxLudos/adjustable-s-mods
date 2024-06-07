@@ -21,11 +21,11 @@ public class IncreaseSModLimitTooltip extends BaseTooltipCreator {
 
     @Override
     public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
-        if (Global.getSector().getPlayerStats().getStoryPoints() < Utils.getStoryPointCost(variant)) {
+        if (Global.getSector().getPlayerStats().getStoryPoints() < Utils.getStoryPointCost(this.variant)) {
             tooltip.addPara("Not enough story points", Misc.getNegativeHighlightColor(), 0f);
             tooltip.addSpacer(10f);
         }
-        tooltip.addPara("This upgrade currently costs %s", 0f, Misc.getHighlightColor(), Misc.getStoryOptionColor(), Utils.getStoryPointCost(variant) + " story points");
+        tooltip.addPara("This upgrade currently costs %s", 0f, Misc.getHighlightColor(), Misc.getStoryOptionColor(), Utils.getStoryPointCost(this.variant) + " story points");
         tooltip.addSpacer(10f);
         tooltip.addPara("Increases the ship's max s-mod limit by %s", 0f, Misc.getTextColor(), Misc.getHighlightColor(), "1");
         tooltip.addSpacer(10f);

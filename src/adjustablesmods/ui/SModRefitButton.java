@@ -23,8 +23,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SModRefitButton extends BaseRefitButton {
-    public final float WIDTH = 380f;
-    public final float HEIGHT = 425f;
+    public static final float WIDTH = 380f;
+    public static final float HEIGHT = 425f;
     public List<HullModSpecAPI> selectedSMods = new ArrayList<>();
     public List<ButtonAPI> sModButtons = new ArrayList<>();
     public ButtonAPI removeSModButton = null;
@@ -142,20 +142,20 @@ public class SModRefitButton extends BaseRefitButton {
         CustomPanelAPI removeSModPanel = backgroundPanel.createCustomPanel(columnWidth / 2f, 25f, new ConfirmButtonPlugin(this, variant));
         TooltipMakerAPI removeSModElement = removeSModPanel.createUIElement(columnWidth / 2f, 25f, false);
         removeSModElement.setButtonFontOrbitron20();
-        removeSModButton = removeSModElement.addButton("Remove", "remove_smod", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.ALL, WIDTH / 2f - 40f, 25f, 0f);
-        removeSModButton.setEnabled(!selectedSMods.isEmpty() && Utils.canAffordStoryPointsCost(1));
-        removeSModButton.getPosition().inBMid(0f);
-        removeSModElement.addTooltipTo(new RemoveSModTooltip(this, member), removeSModButton, TooltipMakerAPI.TooltipLocation.RIGHT);
+        this.removeSModButton = removeSModElement.addButton("Remove", "remove_smod", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.ALL, WIDTH / 2f - 40f, 25f, 0f);
+        this.removeSModButton.setEnabled(!this.selectedSMods.isEmpty() && Utils.canAffordStoryPointsCost(1));
+        this.removeSModButton.getPosition().inBMid(0f);
+        removeSModElement.addTooltipTo(new RemoveSModTooltip(this, member), this.removeSModButton, TooltipMakerAPI.TooltipLocation.RIGHT);
         removeSModPanel.addUIElement(removeSModElement);
         footerElement.addCustom(removeSModPanel, 0f).getPosition().belowLeft(storyPointsPanel, 10f);
 
         CustomPanelAPI increaseSModLimitPanel = backgroundPanel.createCustomPanel(columnWidth / 2f, 25f, new ConfirmButtonPlugin(this, variant));
         TooltipMakerAPI increaseSModLimitElement = increaseSModLimitPanel.createUIElement(columnWidth / 2f, 25f, false);
         increaseSModLimitElement.setButtonFontOrbitron20();
-        increaseSModLimitButton = increaseSModLimitElement.addButton("Increase Limit", "increase_limit", Misc.getStoryOptionColor(), Misc.getStoryDarkColor(), Alignment.MID, CutStyle.ALL, WIDTH / 2f - 40f, 25f, 0f);
-        increaseSModLimitButton.setEnabled(Utils.canAffordStoryPointsCost(Utils.getStoryPointCost(variant)));
-        increaseSModLimitButton.getPosition().inBMid(0f);
-        increaseSModLimitElement.addTooltipTo(new IncreaseSModLimitTooltip(variant), increaseSModLimitButton, TooltipMakerAPI.TooltipLocation.RIGHT);
+        this.increaseSModLimitButton = increaseSModLimitElement.addButton("Increase Limit", "increase_limit", Misc.getStoryOptionColor(), Misc.getStoryDarkColor(), Alignment.MID, CutStyle.ALL, WIDTH / 2f - 40f, 25f, 0f);
+        this.increaseSModLimitButton.setEnabled(Utils.canAffordStoryPointsCost(Utils.getStoryPointCost(variant)));
+        this.increaseSModLimitButton.getPosition().inBMid(0f);
+        increaseSModLimitElement.addTooltipTo(new IncreaseSModLimitTooltip(variant), this.increaseSModLimitButton, TooltipMakerAPI.TooltipLocation.RIGHT);
         increaseSModLimitPanel.addUIElement(increaseSModLimitElement);
         footerElement.addCustom(increaseSModLimitPanel, 0f).getPosition().rightOfMid(removeSModPanel, 0f);
 
@@ -165,6 +165,6 @@ public class SModRefitButton extends BaseRefitButton {
 
     @Override
     public void onPanelClose(FleetMemberAPI member, ShipVariantAPI variant, MarketAPI market) {
-        selectedSMods.clear();
+        this.selectedSMods.clear();
     }
 }

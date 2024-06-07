@@ -23,19 +23,19 @@ public class RemoveSModTooltip extends BaseTooltipCreator {
 
     @Override
     public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
-        if (!refitButton.selectedSMods.isEmpty() && Global.getSector().getPlayerStats().getStoryPoints() >= refitButton.selectedSMods.size()) {
-            tooltip.addPara("Removing selected s-mods will cost a total of %s", 0f, Misc.getHighlightColor(), Misc.getStoryOptionColor(), refitButton.selectedSMods.size() + " story points");
+        if (!this.refitButton.selectedSMods.isEmpty() && Global.getSector().getPlayerStats().getStoryPoints() >= this.refitButton.selectedSMods.size()) {
+            tooltip.addPara("Removing selected s-mods will cost a total of %s", 0f, Misc.getHighlightColor(), Misc.getStoryOptionColor(), this.refitButton.selectedSMods.size() + " story points");
             tooltip.addSpacer(10f);
         }
-        if (refitButton.selectedSMods.isEmpty() && !member.getVariant().getSMods().isEmpty()) {
+        if (this.refitButton.selectedSMods.isEmpty() && !this.member.getVariant().getSMods().isEmpty()) {
             tooltip.addPara("Select s-mods to remove", Misc.getHighlightColor(), 0f);
             tooltip.addSpacer(10f);
         }
-        if (member.getVariant().getSMods().isEmpty()) {
+        if (this.member.getVariant().getSMods().isEmpty()) {
             tooltip.addPara("No s-mods found", Misc.getHighlightColor(), 0f);
             tooltip.addSpacer(10f);
         }
-        if (!refitButton.selectedSMods.isEmpty() && Global.getSector().getPlayerStats().getStoryPoints() < 1) {
+        if (!this.refitButton.selectedSMods.isEmpty() && Global.getSector().getPlayerStats().getStoryPoints() < 1) {
             tooltip.addPara("Not enough skill points", Misc.getNegativeHighlightColor(), 0f);
             tooltip.addSpacer(10f);
         }

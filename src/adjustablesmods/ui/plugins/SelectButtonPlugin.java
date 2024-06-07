@@ -19,22 +19,22 @@ public class SelectButtonPlugin extends BaseCustomUIPanelPlugin {
     @Override
     public void buttonPressed(Object buttonId) {
         if (buttonId instanceof HullModSpecAPI) {
-            if (!refitButton.selectedSMods.contains((HullModSpecAPI) buttonId)) {
-                refitButton.selectedSMods.add((HullModSpecAPI) buttonId);
+            if (!this.refitButton.selectedSMods.contains((HullModSpecAPI) buttonId)) {
+                this.refitButton.selectedSMods.add((HullModSpecAPI) buttonId);
             } else {
-                refitButton.selectedSMods.remove((HullModSpecAPI) buttonId);
+                this.refitButton.selectedSMods.remove((HullModSpecAPI) buttonId);
             }
         }
 
-        for (ButtonAPI button : refitButton.sModButtons) {
-            if (refitButton.selectedSMods.contains((HullModSpecAPI) button.getCustomData())) {
+        for (ButtonAPI button : this.refitButton.sModButtons) {
+            if (this.refitButton.selectedSMods.contains((HullModSpecAPI) button.getCustomData())) {
                 button.highlight();
             } else {
                 button.unhighlight();
             }
         }
 
-        refitButton.removeSModButton.setEnabled(!refitButton.selectedSMods.isEmpty() && Utils.canAffordStoryPointsCost(refitButton.selectedSMods.size()));
-        refitButton.increaseSModLimitButton.setEnabled(Utils.canAffordStoryPointsCost(Utils.getStoryPointCost(variant)));
+        this.refitButton.removeSModButton.setEnabled(!this.refitButton.selectedSMods.isEmpty() && Utils.canAffordStoryPointsCost(this.refitButton.selectedSMods.size()));
+        this.refitButton.increaseSModLimitButton.setEnabled(Utils.canAffordStoryPointsCost(Utils.getStoryPointCost(this.variant)));
     }
 }

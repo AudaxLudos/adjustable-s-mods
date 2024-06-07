@@ -21,8 +21,8 @@ public class BorderedPanelPlugin extends BaseCustomUIPanelPlugin {
 
     @Override
     public void renderBelow(float alphaMult) {
-        if (renderBackground && position != null) {
-            Color c = backgroundColor;
+        if (this.renderBackground && this.position != null) {
+            Color c = this.backgroundColor;
 
             GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -35,9 +35,9 @@ public class BorderedPanelPlugin extends BaseCustomUIPanelPlugin {
             GL11.glColor4f(c.getRed() / 255f,
                     c.getGreen() / 255f,
                     c.getBlue() / 255f,
-                    c.getAlpha() / 255f * (alphaMult * alpha));
+                    c.getAlpha() / 255f * (alphaMult * this.alpha));
 
-            GL11.glRectf(position.getX(), position.getY(), position.getX() + position.getWidth(), position.getY() + position.getHeight());
+            GL11.glRectf(this.position.getX(), this.position.getY(), this.position.getX() + this.position.getWidth(), this.position.getY() + this.position.getHeight());
 
             GL11.glPopMatrix();
         }
@@ -45,8 +45,8 @@ public class BorderedPanelPlugin extends BaseCustomUIPanelPlugin {
 
     @Override
     public void render(float alphaMult) {
-        if (position != null) {
-            Color c = borderColor;
+        if (this.position != null) {
+            Color c = this.borderColor;
             GL11.glPushMatrix();
 
             GL11.glTranslatef(0f, 0f, 0f);
@@ -62,16 +62,16 @@ public class BorderedPanelPlugin extends BaseCustomUIPanelPlugin {
             GL11.glColor4f(c.getRed() / 255f,
                     c.getGreen() / 255f,
                     c.getBlue() / 255f,
-                    c.getAlpha() / 255f * (alphaMult * alpha));
+                    c.getAlpha() / 255f * (alphaMult * this.alpha));
 
             GL11.glEnable(GL11.GL_LINE_SMOOTH);
             GL11.glBegin(GL11.GL_LINE_STRIP);
 
-            GL11.glVertex2f(position.getX(), position.getY());
-            GL11.glVertex2f(position.getX(), position.getY() + position.getHeight());
-            GL11.glVertex2f(position.getX() + position.getWidth(), position.getY() + position.getHeight());
-            GL11.glVertex2f(position.getX() + position.getWidth(), position.getY());
-            GL11.glVertex2f(position.getX(), position.getY());
+            GL11.glVertex2f(this.position.getX(), this.position.getY());
+            GL11.glVertex2f(this.position.getX(), this.position.getY() + this.position.getHeight());
+            GL11.glVertex2f(this.position.getX() + this.position.getWidth(), this.position.getY() + this.position.getHeight());
+            GL11.glVertex2f(this.position.getX() + this.position.getWidth(), this.position.getY());
+            GL11.glVertex2f(this.position.getX(), this.position.getY());
 
             GL11.glEnd();
             GL11.glPopMatrix();
