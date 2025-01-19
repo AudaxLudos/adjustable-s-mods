@@ -42,7 +42,7 @@ public class SModRefitButton extends BaseRefitButton {
 
     @Override
     public int getOrder(FleetMemberAPI member, ShipVariantAPI variant) {
-        return 9999;
+        return 1;
     }
 
     @Override
