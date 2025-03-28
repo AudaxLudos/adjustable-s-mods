@@ -1,3 +1,11 @@
+### 1.1.3d
+- Release 1.1.3d
+- Update version file download url
+- Update github actions script
+- Update game version to 0.98a from 0.97a
+- Update java version to 17 from 7
+- Update smod refit button order
+
 ### 1.1.2
 - Release 1.1.2
 - Update refit ui to properly enable and disable buttons
