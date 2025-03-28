@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="lunalib.kotlin">
+  <library name="lunalib.api">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../LunaLib/jars/LunaLib-Kotlin.jar!/" />
       <root url="jar://$PROJECT_DIR$/../LunaLib/jars/LunaLib.jar!/" />
