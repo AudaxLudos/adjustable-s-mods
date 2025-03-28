@@ -46,7 +46,7 @@ jobs:
         with:
           name: ${{ env.VERSION }}
           tag: ${{ env.VERSION }}
-          body: "View changes here: [CHANGELOG](https://raw.githubusercontent.com/AudaxLudos/adjustable-s-mods/main/CHANGELOG.txt)"
+          body: "View changes here: [CHANGELOG](https://raw.githubusercontent.com/AudaxLudos/terraforming-made-easy/main/CHANGELOG.txt)"
           draft: false
           prerelease: '${{ env.IS_PRERELEASE }}'
           token: ${{ secrets.GITHUB_TOKEN }}
